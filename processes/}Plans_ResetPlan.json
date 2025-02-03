@@ -1,0 +1,29 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_ResetPlan",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_ResetPlan.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"Forecast",
+			"Type":"String"
+		},
+		{
+			"Name":"pResetComments",
+			"Prompt":"",
+			"Value":"N",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737911271000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

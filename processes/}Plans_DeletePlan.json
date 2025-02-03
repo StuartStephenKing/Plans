@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_DeletePlan",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_DeletePlan.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"Forecast",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737911250000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

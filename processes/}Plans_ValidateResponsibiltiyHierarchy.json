@@ -1,0 +1,41 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_ValidateResponsibiltiyHierarchy",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_ValidateResponsibiltiyHierarchy.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pApprovalDimension",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pApprovalHierarchy",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubset",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1738336330000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

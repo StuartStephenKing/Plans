@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_Setup",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_Setup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pReset",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737910393000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

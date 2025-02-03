@@ -1,0 +1,28 @@
+#region Prolog
+vNow           = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vUser           = TM1User();
+
+vCommentCube = '}Plans_' | pPlan | '_Comments';
+vCurrentCommentLine = CellGetN( '}Plans_Control', pPlan, 'Comment Index' );
+vCurrentCommentLineString = NumberToString( vCurrentCommentLine );
+
+CellPutS( pPlan, vCommentCube, vCurrentCommentLineString, 'Plan' );
+CellPutS( pTask, vCommentCube, vCurrentCommentLineString, 'Task' );
+CellPutS( pNode, vCommentCube, vCurrentCommentLineString, 'Node' );
+CellPutS( pState, vCommentCube, vCurrentCommentLineString, 'State' );
+CellPutS( pComment, vCommentCube, vCurrentCommentLineString, 'Comment' );
+CellPutS( vNow, vCommentCube, vCurrentCommentLineString, 'DateTime' );
+CellPutS( vUser, vCommentCube, vCurrentCommentLineString, 'User' );
+
+#endregion
+#region Epilog
+vNextCommentLine = vCurrentCommentLine + 1;
+vNextCommentLineString = NumberToString( vNextCommentLine );
+
+IF ( DimensionElementExists( '}Plans_Comment_Lines', vNextCommentLineString ) = 0);
+    DimensionElementInsertDirect( '}Plans_Comment_Lines', '', vNextCommentLineString, 'N' );
+ENDIF;
+CellPutN( vNextCommentLine, '}Plans_Control', pPlan, 'Comment Index' );
+
+
+#endregion

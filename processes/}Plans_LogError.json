@@ -1,0 +1,35 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_LogError",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_LogError.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"0",
+			"Type":"String"
+		},
+		{
+			"Name":"pMessage",
+			"Prompt":"",
+			"Value":"0",
+			"Type":"String"
+		},
+		{
+			"Name":"pError",
+			"Prompt":"",
+			"Value":"0",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737910892000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

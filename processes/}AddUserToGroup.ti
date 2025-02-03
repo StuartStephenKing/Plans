@@ -1,0 +1,7 @@
+#region Prolog
+
+AssignClientToGroup( TM1User(), pGroup );
+SecurityRefresh();
+
+
+#endregion

@@ -1,0 +1,41 @@
+{
+	"@type":"Process",
+	"Name":"GenerateCube",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"GenerateCube.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCube",
+			"Prompt":"",
+			"Value":"PlansTestCube",
+			"Type":"String"
+		},
+		{
+			"Name":"pDimensionCount",
+			"Prompt":"",
+			"Value":5,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDimensionsLeafCount",
+			"Prompt":"",
+			"Value":"1, 1, 1, 1, 200",
+			"Type":"String"
+		},
+		{
+			"Name":"pElementNameSize",
+			"Prompt":"",
+			"Value":14,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[],
+	"UID": "1738551014000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

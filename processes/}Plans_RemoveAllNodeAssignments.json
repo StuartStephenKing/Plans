@@ -1,0 +1,29 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_RemoveAllNodeAssignments",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_RemoveAllNodeAssignments.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTask",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737911191000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

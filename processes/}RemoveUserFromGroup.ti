@@ -1,0 +1,7 @@
+#region Prolog
+
+RemoveClientFromGroup( TM1User(), pGroup );
+SecurityRefresh();
+
+
+#endregion

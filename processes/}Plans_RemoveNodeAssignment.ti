@@ -1,0 +1,147 @@
+#region Prolog
+vNow           = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vUser = TM1User();
+
+vPlanStateCubeName = '}Plans_' | pPlan | '_State';
+vPlanControlCube = '}Plans_Control';
+vPlanCubesCube = '}Plans_Cubes';
+
+vApprovalDimension = CellGetS( vPlanControlCube, pPlan, 'Dimension' );
+vApprovalHierarchy = CellGetS( vPlanControlCube, pPlan, 'Hierarchy' );
+vApprovalSubset = CellGetS( vPlanControlCube, pPlan, 'Subset' );
+vSecurity = CellGetS( vPlanControlCube, pPlan, 'Security' );
+vControlDimension = CellGetS ( vPlanControlCube, pPlan, 'Control Dimension' );
+vControlHierarchy = CellGetS ( vPlanControlCube, pPlan, 'Control Hierarchy' );
+vControlMember = CellGetS ( vPlanControlCube, pPlan, 'Control Member' );
+
+DatasourceASCIIQuoteCharacter='';
+
+# IF ( CellGetS ( vPlanStateCubeName, pNode, pTask, pContributorGroup, 'Contributor' ) @<> pContributorGroup );
+#     ExecuteProcess( '}Plans_LogError',
+#                    'pPlan', pPlan,
+#                    'pMessage', 'Unable to remove contributor  from node',
+#                    'pError', 'Contributor ' | pContributorGroup | ' not assigned to node ' | pNode );
+# ENDIF;
+
+vContributorGroup = CellGetS( vPlanStateCubeName, pNode, pTask, 'Contributor  group' );
+vReviewerGroup = CellGetS( vPlanStateCubeName, pNode, pTask, 'Reviewer group' );
+
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'Contributor group' );
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'Reviewer group' );
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'State' );
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'Owner' );
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'Last update' );
+CellPutS( '', vPlanStateCubeName, pNode, pTask, 'Lock' );
+
+vApprovalElementIndex = 1;
+vApprovalElement = DIMNM( vApprovalDimension, vApprovalElementIndex );
+WHILE ( vApprovalElement @<> '' );
+    IF ( ElementIsAncestor ( vApprovalDimension, vApprovalHierarchy, pNode, vApprovalElement ) = 1);
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'Contributor group' );
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'Reviewer group' );
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'State' );
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'Owner' );
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'Last update' );
+        CellPutS( '', vPlanStateCubeName, vApprovalElement, pTask, 'Lock' );
+    ENDIF;
+    vApprovalElementIndex = vApprovalElementIndex + 1;
+    vApprovalElement = DIMNM( vApprovalDimension, vApprovalElementIndex );
+END;
+
+
+IF ( vSecurity @= 'Cell');
+    vCubeIndex = 1;
+    vCube = DIMNM( '}Cubes', vCubeIndex );
+    WHILE ( vCube @<> '');
+        IF ( CELLGETN ( '}Plans_Cubes', vCube, pPlan ) = 1);
+            vCellSecurityMap = '';
+            vCellSecurityFile = 'cellSecurity_' | vCube | '.csv';
+            vCubeDimensionOrderIndex = 1;
+            vCubeDimensionOrder = TABDIM( '}CellSecurity_' | vCube, vCubeDimensionOrderIndex );
+            WHILE ( vCubeDimensionOrder @<> '' );
+                IF ( vCubeDimensionOrder @= vApprovalDimension );
+                    IF ( vCellSecurityMap @<> '' );
+                        vCellSecurityMap = vCellSecurityMap | ', ';
+                    ENDIF;
+                    vCellSecurityMap = vCellSecurityMap | pNode;
+                ELSEIF ( vCubeDimensionOrder @= vControlDimension );
+                    IF ( vCellSecurityMap @<> '' );
+                        vCellSecurityMap = vCellSecurityMap | ', ';
+                    ENDIF;
+                    vCellSecurityMap = vCellSecurityMap | vControlMember;
+                ENDIF;
+                vCubeDimensionOrderIndex = vCubeDimensionOrderIndex + 1;
+                vCubeDimensionOrder = TABDIM( '}CellSecurity_' | vCube, vCubeDimensionOrderIndex );
+            END;
+            ASCIIOutput( vCellSecurityFile, vCellSecurityMap );
+            vApprovalDimensionIndex = 1;
+            vApprovalDimensionMember = DIMNM( vApprovalDimension,vApprovalDimensionIndex );
+            WHILE ( vApprovalDimensionMember @<> '' );
+                IF ( ElementIsAncestor( vApprovalDimension, vApprovalHierarchy, pNode, vApprovalDimensionMember ) = 1);
+                    vCellSecurityMap = '';
+                    vCubeDimensionOrderIndex = 1;
+                    vCubeDimensionOrder = TABDIM( '}CellSecurity_' | vCube,vCubeDimensionOrderIndex );
+                    WHILE ( vCubeDimensionOrder @<> '' );
+                        IF ( vCubeDimensionOrder @= vApprovalDimension );
+                            IF ( vCellSecurityMap @<> '' );
+                                vCellSecurityMap = vCellSecurityMap | ', ';
+                            ENDIF;
+
+                            vCellSecurityMap = vCellSecurityMap | vApprovalDimensionMember;
+                        ELSEIF ( vCubeDimensionOrder @= vControlDimension );
+                            IF ( vCellSecurityMap @<> '' );
+                                vCellSecurityMap = vCellSecurityMap | ', ';
+                            ENDIF;
+                            vCellSecurityMap = vCellSecurityMap | vControlMember;
+                        ENDIF;
+                        vCubeDimensionOrderIndex = vCubeDimensionOrderIndex + 1;
+                        vCubeDimensionOrder = TABDIM( '}CellSecurity_' | vCube,vCubeDimensionOrderIndex );
+                    END;
+                    ASCIIOutput( vCellSecurityFile, vCellSecurityMap );
+                ENDIF;
+                vApprovalDimensionIndex = vApprovalDimensionIndex + 1;
+                vApprovalDimensionMember = DIMNM( vApprovalDimension,vApprovalDimensionIndex );
+            END;
+        ENDIF;
+        vCubeIndex = vCubeIndex + 1;
+        vCube = DIMNM( '}Cubes', vCubeIndex );
+    END;
+ENDIF;
+
+
+
+#endregion
+#region Epilog
+
+IF ( vSecurity @= 'Element' );
+    HierarchyElementSecurityPut ( 'None', vApprovalDimension, vApprovalHierarchy, pNode, vContributorGroup );
+    IF ( vReviewerGroup @<> '' );
+        HierarchyElementSecurityPut ( 'None', vApprovalDimension, vApprovalHierarchy, pNode, vReviewerGroup );
+    ENDIF;
+    vNodeIndex = 1;
+    vNode = DIMNM ( vApprovalDimension, vNodeIndex );
+    WHILE ( vNode @<> '' );
+        IF ( ElementIsAncestor ( vApprovalDimension, vApprovalHierarchy, pNode, vNode ) = 1);
+            HierarchyElementSecurityPut ( 'None', vApprovalDimension, vApprovalHierarchy, vNode, vContributorGroup );
+            IF ( vReviewerGroup @<> '' );
+                HierarchyElementSecurityPut ( 'None', vApprovalDimension, vApprovalHierarchy, vNode, vReviewerGroup );
+            ENDIF;
+        ENDIF;
+        vNodeIndex = vNodeIndex + 1;
+        vNode = DIMNM ( vApprovalDimension, vNodeIndex );
+    END;
+ELSEIF ( vSecurity @= 'Cell' );
+    vCubeIndex = 1;
+    vCube = DIMNM( '}Cubes', vCubeIndex );
+    WHILE ( vCube @<> '');
+        IF ( CELLGETN ( '}Plans_Cubes', vCube, pPlan ) = 1);
+            vCellSecurityFile = 'cellSecurity_' | vCube | '.csv';
+            ExecuteProcess( '}Plans_LoadCellSecurity', 'pCube', vCube, 'pFile', vCellSecurityFile, 'pContributorGroup', vContributorGroup, 'pReviewerGroup', vReviewerGroup, 'pSecurityValue', '' );
+        ENDIF;
+        vCubeIndex = vCubeIndex + 1;
+        vCube = DIMNM( '}Cubes', vCubeIndex );
+    END;
+ENDIF;
+
+
+#endregion

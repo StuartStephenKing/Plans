@@ -1,0 +1,35 @@
+{
+	"@type":"Process",
+	"Name":"LoadRandomData",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"LoadRandomData.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCube",
+			"Prompt":"",
+			"Value":"PlansTestCube",
+			"Type":"String"
+		},
+		{
+			"Name":"pSplitDimension",
+			"Prompt":"",
+			"Value":"PlansTestCube_D5",
+			"Type":"String"
+		},
+		{
+			"Name":"pQueueSize",
+			"Prompt":"",
+			"Value":4,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[],
+	"UID": "1738552101000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

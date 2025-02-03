@@ -1,0 +1,58 @@
+{
+	"@type":"Process",
+	"Name":"GenerateLevel",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"GenerateLevel.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimension",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pLevel",
+			"Prompt":"",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pMinChilds",
+			"Prompt":"",
+			"Value":3,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pMaxChilds",
+			"Prompt":"",
+			"Value":20,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pElementNameLength",
+			"Prompt":"",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vElement",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	],
+	"UID": "1738540158000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f"
+	]
+}

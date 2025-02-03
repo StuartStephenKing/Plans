@@ -1,0 +1,66 @@
+#region Prolog
+vDebugFile = pNode | '_SetNodeParentState.txt';
+
+vNow = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vPlanStateCubeName = '}Plans_' | pPlan | '_state';
+vPlanControlCube = '}Plans_Control';
+vPlanCubesCube = '}Plans_Cubes';
+vApprovalDimension = CellGetS( vPlanControlCube, pPlan, 'Dimension' );
+vApprovalHierarchy = CellGetS( vPlanControlCube, pPlan, 'Hierarchy' );
+vSecurity = CellGetS( vPlanControlCube, pPlan, 'Security' );
+vControlDimension = CellGetS( vPlanControlCube, pPlan, 'Control Dimension' );
+vControlHierarchy = CellGetS( vPlanControlCube, pPlan, 'Control Hierarchy' );
+vControlMember = CellGetS( vPlanControlCube, pPlan, 'Control Member' );
+
+
+vElementIndex = 1;
+vChildCount = ElementComponentCount( vApprovalDimension, vApprovalHierarchy, pNode );
+
+vSubmittedChildrenCount = 0;
+vRejectedChildrenCount = 0;
+vApprovedChildrenCount = 0;
+vOwnedChildreanCount = 0;
+
+WHILE ( vElementIndex <= vChildCount );
+    vChildElement = ElementComponent( vApprovalDimension, vApprovalHierarchy, pNode, vElementIndex );
+    vChildState = CellGetS( vPlanStateCubeName, vChildElement, pTask, 'State' );
+    #ASCIIOutput( vDebugFile, vChildElement, vChildState );
+    IF ( vChildState @= 'Submitted' );
+        vSubmittedChildrenCount = vSubmittedChildrenCount + 1;
+    ELSEIF ( vChildState @= 'Rejected' );
+        vRejectedChildrenCount = vRejectedChildrenCount + 1;
+    ELSEIF ( vChildState @= 'Approved' );
+        vApprovedChildrenCount = vApprovedChildrenCount + 1;
+    ELSEIF ( vChildState @= 'Owned' );
+        vOwnedChildreanCount = vOwnedChildreanCount + 1; 
+    ENDIF;
+    vElementIndex = vElementIndex + 1;
+END;
+
+#ASCIIOutput( vDebugFile, 'Child count: ' | NumberToString( vChildCount ), 'Submitted count: ' | NumberToString( vAllChildrenSubmitted ) );
+vCurrentParentState = CellGetS( vPlanStateCubeName, pNode, pTask, 'State' );
+
+IF ( vChildCount = vSubmittedChildrenCount % vChildCount = vApprovedChildrenCount );
+    CellPutS ( pState, vPlanStateCubeName, pNode, pTask, 'State' );  
+    CellPutS ( vNow, vPlanStateCubeName, pNode, pTask, 'Last Update' );  
+    CellPutS ( NumberToString ( pLock ), vPlanStateCubeName, pNode, pTask, 'Lock' );
+ELSEIF ( vRejectedChildrenCount > 0 );
+    CellPutS ( pState, vPlanStateCubeName, pNode, pTask, 'State' );  
+    CellPutS ( vNow, vPlanStateCubeName, pNode, pTask, 'Last Update' );  
+    CellPutS ( NumberToString ( pLock ), vPlanStateCubeName, pNode, pTask, 'Lock' );
+ENDIF;
+
+vElementParentCount = ElementParentCount( vApprovalDimension, vApprovalHierarchy, pNode );
+    IF ( vElementParentCount = 1);
+        vParentNode = ElementParent( vApprovalDimension, vApprovalHierarchy, pNode, 1 );
+        ExecuteProcess( '}Plans_SetNodeParentState',
+                       'pPlan', pPlan,
+                       'pTask', pTask,
+                       'pNode', vParentNode,
+                       'pLock', pLock,
+                       'pState', pState);
+    ENDIF;      
+
+
+
+#endregion

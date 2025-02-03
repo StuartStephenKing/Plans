@@ -1,0 +1,64 @@
+#region Prolog
+
+vLevelSubset = 'LEVEL' | NumberToString ( pLevel );
+IF ( SubsetExists ( pDimension, vLevelSubset ) = 1);
+    SubsetDestroy ( pDimension, vLevelSubset );
+ENDIF;
+SubsetCreate ( pDimension, vLevelSubset );
+
+leafElementCount = DIMSIZ ( pDimension );
+vIndex = 1;
+WHILE ( vIndex <= leafElementCount );
+    elementName = DIMNM ( pDimension, vIndex );
+    #ASCIIOUTPUT ( 'debugMore.txt' | NumberToString ( pLevel ) | '.log', elementName | ' - ' | NumberToString ( ElementLevel ( pDimension, pDimension, elementName ) ) );
+    IF ( ElementLevel ( pDimension, pDimension, elementName ) = pLevel );
+        SubsetElementInsert ( pDimension, vLevelSubset, elementName, SubsetGetSize ( pDimension, vLevelSubset ) + 1 );
+    ENDIF;
+    vIndex = vIndex + 1;
+END;
+
+vParentElementName = '';
+DataSourceType = 'SUBSET';
+DatasourceNameForServer = pDimension;
+DatasourceDimensionSubset = vLevelSubset;
+
+vRand = RAND();
+ASCIIOutput( 'generateLevelDebugProlog.txt', 'vRand: ' | NumberToString( vRand ) );
+vChildRange = 1 / ( pMaxChilds - pMinChilds );
+ASCIIOutput( 'generateLevelDebugProlog.txt', 'vChildRange: ' | NumberToString( vChildRange ) );
+vChildrenCountTotal = ROUND ( vRand / vChildRange );
+ASCIIOutput( 'generateLevelDebugProlog.txt', 'vChildrenCountTotal: ' | NumberToString( vChildrenCountTotal ) );
+
+vChildrenCount = 1;
+vNewConsolidationCount = 1;
+vNewConsolidationElementHeader =  'LEVEL' | NumberToString ( pLevel + 1 );
+
+#endregion
+#region Metadata
+
+IF ( vChildrenCount = 1 );
+    vConsolidationNumber = NumberToString( vNewConsolidationCount );
+    zeroPadCount = pElementNameLength - ( LONG ( vNewConsolidationElementHeader ) );
+    zeroPadString = FILL ( '0', zeroPadCount );   
+    vParentElementName =  vNewConsolidationElementHeader | zeroPadString | vConsolidationNumber ;
+    ASCIIOutput( 'generateLevelDebugMeta.txt', 'vParentElementName: ' | vParentElementName );
+    DimensionElementInsertDirect ( pDimension, '', vParentElementName, 'C' );
+    DimensionElementComponentAddDirect ( pDimension, vParentElementName, vElement, 1 );
+    vNewConsolidationCount = vNewConsolidationCount + 1;
+    vChildrenCount = vChildrenCount + 1;
+ELSEIF ( vChildrenCount <= vChildrenCountTotal ) ;
+    DimensionElementInsertDirect ( pDimension, '', vParentElementName, 'C' );
+    DimensionElementComponentAddDirect ( pDimension, vParentElementName, vElement, 1 );
+    vChildrenCount = vChildrenCount + 1;
+ELSEIF ( vChildrenCount > vChildrenCountTotal );
+    DimensionElementInsertDirect ( pDimension, '', vParentElementName, 'C' );
+    DimensionElementComponentAddDirect ( pDimension, vParentElementName, vElement, 1 );
+    vRand = RAND();
+    ASCIIOutput( 'generateLevelDebugMeta.txt', 'vRand: ' | NumberToString( vRand ) );
+    vChildrenCountTotal = ROUND ( vRand / vChildRange );
+    ASCIIOutput( 'generateLevelDebugMeta.txt', 'vChildrenCountTotal: ' | NumberToString( vChildrenCountTotal ) );
+    vChildrenCount = 1;
+ENDIF;
+#ASCIIOutput( 'generateLevelDebugMeta.txt', 'vChildrenCount: ' | NumberToString( vChildrenCount ) );
+
+#endregion

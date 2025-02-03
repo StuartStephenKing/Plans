@@ -1,0 +1,53 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_AssignNode",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_AssignNode.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"Name of workflow",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pContributorGroup",
+			"Prompt":"User or group to assign as contributor",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pReviewerGroup",
+			"Prompt":"(Optional) User or group to assign as reviewer",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pNode",
+			"Prompt":"Node in approval dimension ",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTask",
+			"Prompt":"Task in plan",
+			"Value":"Task 1",
+			"Type":"String"
+		},
+		{
+			"Name":"pLock",
+			"Prompt":"1 to Lock and 0 to Unlock",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[],
+	"UID": "1737910841000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

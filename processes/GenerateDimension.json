@@ -1,0 +1,41 @@
+{
+	"@type":"Process",
+	"Name":"GenerateDimension",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"GenerateDimension.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimension",
+			"Prompt":"",
+			"Value":"ApprovalTest",
+			"Type":"String"
+		},
+		{
+			"Name":"pNumberOfLeafElements",
+			"Prompt":"",
+			"Value":8000,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pElementNameLength",
+			"Prompt":"",
+			"Value":14,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pLevels",
+			"Prompt":"",
+			"Value":4,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[],
+	"UID": "1738538561000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

@@ -1,0 +1,39 @@
+#region Prolog
+
+vNow = NumberToString( NOW );
+tempSubset = 'temp_deleteCubeCasade_' | vNow;
+IF (SubsetExists ( '}Dimensions', tempSubset  ) = 1 );
+   SubsetDestroy ( '}Dimensions', tempSubset  ); 
+ENDIF;
+SubsetCreate ( '}Dimensions', tempSubset  );
+
+i = 1;
+dimensionName = TABDIM ( pCube, i );
+WHILE ( dimensionName @<> '' );
+   SubsetElementInsert (  '}Dimensions', tempSubset , dimensionName, SubsetGetSize ( '}Dimensions', tempSubset  ) + 1 );
+   dimensionName = TABDIM ( pCube, i );
+   i = i + 1;
+END;
+
+IF ( CubeExists ( pCube ) = 1);
+   CubeDestroy ( pCube );
+ELSE ;
+   PROCESSQUIT;
+ENDIF;
+
+subsetSize = SUBSETGETSIZE ( '}Dimensions', tempSubset  );
+WHILE ( subsetSize > 1 );
+   dimName = SubsetGetElementName ( '}Dimensions', tempSubset, subsetSize );
+   SubsetElementDelete ( '}Dimensions', tempSubset, subsetSize );
+   DIMENSIONDESTROY ( dimName );
+   subsetSize = SUBSETGETSIZE ( '}Dimensions', tempSubset  );
+END;
+
+#endregion
+#region Epilog
+
+IF (SubsetExists ( '}Dimensions', tempSubset  ) = 1 );
+   SubsetDestroy ( '}Dimensions', tempSubset  ); 
+ENDIF;
+
+#endregion

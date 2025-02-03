@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"}RemoveUserFromGroup",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}RemoveUserFromGroup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pGroup",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1738088912000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

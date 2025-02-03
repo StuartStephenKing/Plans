@@ -1,0 +1,36 @@
+#region Prolog
+vNow           = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vUser = TM1User();
+
+vPlanCubeName = '}Plans_' | pPlan | '_State';
+vPlanControlCube = '}Plans_Control';
+vPlanCubesCube = '}Plans_Cubes';
+
+vApprovalDimension = CellGetS( vPlanControlCube, pPlan, 'Dimension' );
+vApprovalHierarchy = CellGetS( vPlanControlCube, pPlan, 'Hierarchy' );
+vApprovalSubset = CellGetS( vPlanControlCube, pPlan, 'Subset' );
+vSecurity = CellGetS( vPlanControlCube, pPlan, 'Security' );
+vControlDimension = CellGetS( vPlanControlCube, pPlan, 'Control Dimension' );
+vControlHierarchy = CellGetS( vPlanControlCube, pPlan, 'Control Hierarchy' );
+vControlMember = CellGetS( vPlanControlCube, pPlan, 'Control Member' );
+vPlanGroupPrefix = CellGetS( '}Plans_Control', pPlan, 'Group Prefix' );
+
+vApprovalElementIndex = 1;
+vApprovalElement = DIMNM( vApprovalDimension, vApprovalElementIndex );
+WHILE ( vApprovalElement @<> '' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'Contributor group' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'Reviewer group' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'State' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'Owner' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'Last Update' );
+    CellPutS( '', vPlanCubeName, vApprovalElement, pTask, 'Lock' );
+    vApprovalElementIndex = vApprovalElementIndex + 1;
+    vApprovalElement = DIMNM( vApprovalDimension, vApprovalElementIndex );
+END;
+
+ExecuteProcess( '}Plans_LockUnlockPlan',
+	'pPlan', pPlan,
+	'pLock', 0 );
+
+
+#endregion

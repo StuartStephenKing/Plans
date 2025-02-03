@@ -1,0 +1,13 @@
+{
+	"@type":"Process",
+	"Name":"GIT Import",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"GIT Import.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[],
+	"UID": "173855349700010"
+}

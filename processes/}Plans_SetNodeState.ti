@@ -1,0 +1,152 @@
+#region Prolog
+vNow = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vUser = TM1User();
+
+vPlanStateCubeName = '}Plans_' | pPlan | '_state';
+vPlanControlCube = '}Plans_Control';
+vPlanCubesCube = '}Plans_Cubes';
+vApprovalDimension = CellGetS( vPlanControlCube, pPlan, 'Dimension' );
+vApprovalHierarchy = CellGetS( vPlanControlCube, pPlan, 'Hierarchy' );
+vSecurity = CellGetS( vPlanControlCube, pPlan, 'Security' );
+vControlDimension = CellGetS( vPlanControlCube, pPlan, 'Control Dimension' );
+vControlHierarchy = CellGetS( vPlanControlCube, pPlan, 'Control Hierarchy' );
+vControlMember = CellGetS( vPlanControlCube, pPlan, 'Control Member' );
+
+
+# States: 
+# 1 - Available
+# 2 - Owned
+# 3 - Submitted
+# 4 - Rejected
+# 5 - Approved
+
+
+vContributorGroup = CellGetS( vPlanStateCubeName, pNode, pTask, 'Contributor  group' );
+vReviewerGroup = CellGetS( vPlanStateCubeName, pNode, pTask, 'Reviewer group' );
+vCurrentState = CellGetS( vPlanStateCubeName, pNode, pTask, 'State' );
+
+# Check the state is actually changing submit an owned node
+IF ( pState @= vCurrentState & pState @<> 'Owned' );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Cannot change from ' | pState | ' to ' | pState ,
+               'pError', 'Error' );
+    ProcessError;
+ENDIF;
+
+# You can only submit an owned node
+IF ( pState @= 'Submitted' & vCurrentState @<> 'Owned' );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Cannot submit, node is not owned' ,
+               'pError', 'Error' );
+    ProcessError;
+ENDIF;
+
+# You can only approve or reject an submitted node
+IF ( pState @= 'Approved' & vCurrentState @<> 'Submitted' );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Cannot change status to approved, node is not yet sumbitted' ,
+               'pError', 'Error' );
+    ProcessError;
+ENDIF;
+
+IF ( pState @= 'Rejected' & vCurrentState @<> 'Submitted' );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Cannot change status to rejected, node is not yet sumbitted' ,
+               'pError', 'Error' );
+    ProcessError;
+ENDIF;
+
+# You can only own a node that is avialable, or owned by someone else
+IF (  pState @= 'Owned' & vCurrentState @<> 'Available' & vCurrentState @<> 'Owned'  );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Cannot take ownership, node is not available' ,
+               'pError', 'Error' );
+    ProcessError;
+ENDIF;
+
+
+# the user must be in the group that is making the change
+IF ( pState @= 'Owned' % pState @= 'Available' );
+    IF ( CellGetS ( '}ClientGroups', vUser, vContributorGroup ) @<> vContributorGroup );
+        RunProcess( '}Plans_LogError',
+                   'pPlan', pPlan,
+                   'pMessage', 'User ' | vUser | ' is not in contributor group ' | vContributorGroup,
+                   'pError', 'Error' );
+        ProcessError;
+    ENDIF;
+ELSEIF ( pState @= 'Rejected' % pState @= 'Approved' );
+    IF ( CellGetS ( '}ClientGroups', vUser, vReviewerGroup ) @<> vReviewerGroup );
+        RunProcess( '}Plans_LogError',
+                   'pPlan', pPlan,
+                   'pMessage', 'User ' | vUser | ' is not in reviewer group ' | vReviewerGroup,
+                   'pError', 'Error' );
+        ProcessError;
+    ENDIF;
+ENDIF;
+
+
+vElementChildCount = ElementComponentCount ( vApprovalDimension, vApprovalHierarchy, pNode );
+vValidControl = 0;
+IF ( DimensionExists( vControlDimension ) = 1);
+    IF ( HierarchyExists( vControlDimension, vControlHierarchy ) = 1);
+        IF ( HierarchyElementExists( vControlDimension, vControlHierarchy, vControlMember ) = 1);
+            vValidControl = 1;
+        ENDIF;
+    ENDIF;
+ENDIF;
+
+
+
+#  Updated the descendants of the node where the state is changing 
+CellPutS ( pState, vPlanStateCubeName, pNode, pTask, 'State' );  
+IF ( pSetOwner @= 'Y' );
+    CellPutS ( vUser, vPlanStateCubeName, pNode, pTask, 'Owner' );  
+ELSEIF ( pSetOwner @= 'C' );
+    CellPutS ( '', vPlanStateCubeName, pNode, pTask, 'Owner' );  
+ENDIF;
+CellPutS ( vNow, vPlanStateCubeName, pNode, pTask, 'Last Update' );  
+CellPutS ( NumberToString ( pLock ), vPlanStateCubeName, pNode, pTask, 'Lock' );
+
+IF ( vElementChildCount > 0);
+    vElementIndex = 1;        
+    vDimensionElement = DIMNM( vApprovalDimension, vElementIndex );
+    WHILE ( vDimensionElement @<> '' );
+        IF ( ElementIsAncestor ( vApprovalDimension, vApprovalHierarchy, pNode, vDimensionElement )  = 1);
+            CellPutS ( pState, vPlanStateCubeName, vDimensionElement, pTask, 'State' );  
+            IF ( pSetOwner @= 'Y' );
+                CellPutS ( vUser, vPlanStateCubeName, vDimensionElement, pTask, 'Owner' );  
+            ELSEIF ( pSetOwner @= 'C' );
+                CellPutS ( '', vPlanStateCubeName, vDimensionElement, pTask, 'Owner' );  
+            ENDIF;
+            CellPutS ( vNow, vPlanStateCubeName, vDimensionElement, pTask, 'Last Update' );  
+            CellPutS ( NumberToString ( pLock ), vPlanStateCubeName, vDimensionElement, pTask, 'Lock' );
+        ENDIF;
+        vElementIndex = vElementIndex + 1;       
+        vDimensionElement = DIMNM( vApprovalDimension, vElementIndex );
+    END;
+ENDIF;
+
+
+#  Check for required update to the parent of the new where the state is changing
+vElementParentCount = ElementParentCount( vApprovalDimension, vApprovalHierarchy, pNode );
+IF ( vElementParentCount = 1);
+    vParentNode = ElementParent( vApprovalDimension, vApprovalHierarchy, pNode, 1 );
+    ExecuteProcess( '}Plans_SetNodeParentState',
+                   'pPlan', pPlan,
+                   'pTask', pTask,
+                   'pNode', vParentNode,
+                   'pLock', pLock,
+                   'pState', pState);
+ENDIF;
+
+
+# Comments and security overlay updated
+ExecuteProcess ( '}Plans_LockUnlockNode', 'pPlan', pPlan, 'pNode', pNode, 'pLock', pLock  );
+ExecuteProcess ( '}Plans_AddComment', 'pPlan', pPlan, 'PNode', pNode, 'pTask', pTask, 'pState', pState, 'pComment', pComment );
+
+#endregion

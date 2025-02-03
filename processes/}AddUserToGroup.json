@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"}AddUserToGroup",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}AddUserToGroup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pGroup",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1738088850000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

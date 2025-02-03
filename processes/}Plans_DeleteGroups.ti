@@ -1,0 +1,21 @@
+#region Prolog
+
+vSecurity = CellGetS( '}Plans_Control', pPlan, 'Security' );
+vSecurityMode = CellGetS( '}Plans_Control', pPlan, 'Security Mode' );
+vWorkflowGroupPrefix = CellGetS( '}Plans_Control', pPlan, 'Group Prefix' );
+
+
+IF ( ( vSecurity @= 'Cell' % vSecurity @= 'Element') & vSecurityMode @= 'Client' );
+    vGroupIndex = DIMSIZ( '}Groups' );
+    vGroup = DIMNM( '}Groups', vGroupIndex );
+    WHILE ( vGroup @<> '' );
+        IF ( SCAN( vWorkflowGroupPrefix, vGroup ) = 1 );
+            DeleteGroup( vGroup );
+        ENDIF;
+        vGroupIndex = vGroupIndex - 1;
+        vGroup = DIMNM( '}Groups', vGroupIndex );
+    END;
+ENDIF;
+
+
+#endregion

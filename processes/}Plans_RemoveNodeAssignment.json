@@ -1,0 +1,35 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_RemoveNodeAssignment",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_RemoveNodeAssignment.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"Name of workflow to update",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pNode",
+			"Prompt":"Node in approval dimension ",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTask",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737911217000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

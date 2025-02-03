@@ -1,0 +1,233 @@
+#region Prolog
+vPlanControlDimension =  '}Plans_Control';
+vPlanControlCube = '}Plans_Control';
+vPlanCubesCube = '}Plans_Cubes';
+vPlanStateDim = '}Plans_State';
+vPlansDimension = '}Plans';
+vPlanComments = '}Plans_Comments';
+vPlanCommentLines = '}Plans_Comment_Lines';
+vPlanErrors = '}Plans_Errors';
+vPlanErrorLines = '}Plans_Error_Lines';
+
+vTasksDimension = '}Plan_Tasks';
+IF ( DimensionExists( vTasksDimension ) = 1 & pReset @= 'Y' );
+    DimensionDestroy( vTasksDimension );
+ENDIF;
+DimensionCreate( vTasksDimension );
+DimensionElementInsertDirect( vTasksDimension, '', 'Task 1', 'N' );
+
+IF ( pReset @= 'Y' );
+    vIndex = 1;
+    vPlan = DIMNM( vPlansDimension, vIndex );
+    WHILE ( vPlan @<> '' );
+        ExecuteProcess( '}Plans_DeletePlan', 'pPlan', vPlan );
+        vIndex = vIndex + 1;
+        vPlan = DIMNM( vPlansDimension, vIndex );
+    END;
+ENDIF;
+
+IF ( CubeExists ( vPlanControlCube ) = 1 );
+    CubeDestroy( vPlanControlCube );
+ENDIF;
+
+IF ( CubeExists ( vPlanCubesCube ) = 1 );
+    CubeDestroy( vPlanCubesCube );
+ENDIF;
+
+IF ( DimensionExists ( vPlanControlDimension ) = 1 );
+    DimensionDestroy( vPlanControlDimension );
+ENDIF;
+DimensionCreate( vPlanControlDimension );
+
+IF ( DimensionExists ( vPlansDimension ) = 1 );
+    DimensionDestroy( vPlansDimension );
+ENDIF;
+DimensionCreate( vPlansDimension );
+
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Name', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Owner', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Created', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'State Cube', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Input Cubes', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Dimension', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Hierarchy', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Subset', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'State', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Security', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Control Dimension', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Control Hierarchy', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Control Member', 'S' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Comment Index', 'N' );
+DimensionElementInsertDirect( vPlanControlDimension, '', 'Group Prefix', 'S' );
+
+
+CubeCreate ( vPlanControlCube, vPlansDimension, vPlanControlDimension );
+CubeCreate ( vPlanCubesCube, '}Cubes', vPlansDimension );
+
+
+IF ( DimensionExists ( vPlanStateDim )  = 1 & pReset @= 'Y' );
+    DimensionDestroy ( vPlanStateDim );
+ENDIF;
+DimensionCreate ( vPlanStateDim );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'Contributor group', 'S' );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'Reviewer group', 'S' );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'State', 'S' );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'Owner', 'S' );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'Last update', 'S' );
+DimensionElementInsertDirect ( vPlanStateDim, '', 'Lock', 'S' );
+
+IF ( CubeExists( vPlanErrors ) = 1);
+    CubeDestroy( vPlanErrors );
+ENDIF;
+
+IF ( DimensionExists ( vPlanErrorLines ) = 1 );
+    DimensionDestroy( vPlanErrorLines );
+ENDIF;
+DimensionCreate( vPlanErrorLines );
+DimensionElementInsertDirect( vPlanErrorLines, '', '1', 'N' );
+
+
+IF ( DimensionExists ( vPlanErrorLines ) = 1 );
+    DimensionDestroy( vPlanErrorLines );
+ENDIF;
+DimensionCreate( vPlanErrorLines );
+DimensionElementInsertDirect( vPlanErrorLines, '', '1', 'N' );
+
+IF ( DimensionExists ( vPlanErrors ) = 1 );
+    DimensionDestroy( vPlanErrors );
+ENDIF;
+DimensionCreate( vPlanErrors );
+DimensionElementInsertDirect( vPlanErrors, '', 'Plan', 'S' );
+DimensionElementInsertDirect( vPlanErrors, '', 'Task', 'S' );
+DimensionElementInsertDirect( vPlanErrors, '', 'Error', 'S' );
+DimensionElementInsertDirect( vPlanErrors, '', 'Message', 'S' );
+DimensionElementInsertDirect( vPlanErrors, '', 'DateTime', 'S' );
+DimensionElementInsertDirect( vPlanErrors, '', 'User', 'S' );
+
+CubeCreate( vPlanErrors, vPlanErrorLines, vPlanErrors );
+
+IF ( DimensionExists( vPlanCommentLines ) = 1 );
+    DimensionDestroy( vPlanCommentLines );
+ENDIF;
+DimensionCreate( vPlanCommentLines );
+DimensionElementInsertDirect( vPlanCommentLines, '', '1', 'N' );
+
+IF ( DimensionExists( vPlanComments ) = 1 );
+    DimensionDestroy( vPlanComments );
+ENDIF;
+DimensionCreate( vPlanComments );
+DimensionElementInsertDirect( vPlanComments, '', 'DateTime', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'User', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'Plan', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'Task', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'Node', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'State', 'S' );
+DimensionElementInsertDirect( vPlanComments, '', 'Comment', 'S' );
+
+
+# Create picklist objects
+
+vPicklistsCube = '}Plans_Picklists';
+vPicklistsPicklistCube = '}PickList_}Plans_Picklists';
+IF ( CubeExists( vPicklistsCube ) = 1 );
+    CubeDestroy( vPicklistsCube );
+ENDIF;
+
+vPicklistDimension = '}Plans_Picklists';
+IF ( DimensionExists( vPicklistDimension ) = 1 );
+    DimensionDestroy( vPicklistDimension );
+ENDIF;
+DimensionCreate( vPicklistDimension );
+
+DimensionElementInsertDirect( vPicklistDimension, '', 'Approval Dimension', 'N' );
+DimensionElementInsertDirect( vPicklistDimension, '', 'Approval Subset', 'N' );
+DimensionElementInsertDirect( vPicklistDimension, '', 'Control Dimension', 'N' );
+DimensionElementInsertDirect( vPicklistDimension, '', 'Control Member', 'N' );
+DimensionElementInsertDirect( vPicklistDimension, '', 'Security', 'N' );
+
+
+vPicklistValueDimension = '}Plans_PickValue';
+IF ( DimensionExists( vPicklistValueDimension ) = 1 );
+    DimensionDestroy( vPicklistValueDimension );
+ENDIF;
+DimensionCreate( vPicklistValueDimension );
+
+DimensionElementInsertDirect( vPicklistValueDimension, '', 'value', 'S' );
+
+CubeCreate( vPicklistsCube, vPicklistDimension, vPicklistValueDimension );
+CubeCreate( vPicklistsPicklistCube, vPicklistDimension, vPicklistValueDimension, '}PickList' );
+
+#ASCIIOutput( 'debugPlansRule.txt',  '[''Approval Subset''] = S:''dimension:}Subsets_'' | DB( }Plans_Picklists'', ''Approval Dimension'', !}Plans_PickValue );' );
+
+CubeRuleAppend( vPicklistsPicklistCube, '[''Approval Subset''] = S:''dimension:}Subsets_'' | DB( ''}Plans_Picklists'', ''Approval Dimension'', !}Plans_PickValue );' );
+CubeRuleAppend( vPicklistsPicklistCube, '[''Control Member''] = S:''dimension:'' | DB( ''}Plans_Picklists'', ''Control Dimension'', !}Plans_PickValue );' );
+CubeRuleAppend( vPicklistsPicklistCube, '[''Approval Dimension''] = S:''subset:}Dimensions:}Plans_ApprovalDimensions'';' );
+CubeRuleAppend( vPicklistsPicklistCube, '[''Control Dimension''] = S:''subset:}Dimensions:}Plans_ControlDimensions'';' );
+CubeRuleAppend( vPicklistsPicklistCube, '[''Security''] = S:''static:Cell:Element'';' );
+
+vPlanGroup = '}Plans_Everyone';
+IF ( DimensionElementExists( '}Groups', vPlanGroup ) = 1);
+    vClientIndex = 1;
+    vClient = DIMNM( '}Clients', vClientIndex );
+    WHILE ( vClient @<> '' );
+        IF ( CellGetS( '}ClientGroups', vClient, vPlanGroup ) @<> vClient );
+            RemoveClientFromGroup( vClient, vPlanGroup );
+        ENDIF;
+        vClientIndex = vClientIndex + 1;
+        vClient = DIMNM( '}Clients', vClientIndex );
+    END;
+ENDIF;
+AddGroup( vPlanGroup );
+
+
+#endregion
+#region Epilog
+
+# Create subsets used to select dimension for approval and control
+vApprovalDimensionSubset = '}Plans_ApprovalDimensions';
+IF ( SubsetExists( '}Dimensions', vApprovalDimensionSubset ) = 1);
+    SubsetDestroy( '}Dimensions', vApprovalDimensionSubset );
+ENDIF;
+SubsetCreatebyMDX( vApprovalDimensionSubset , 'FILTER(FILTER([}Dimensions].[}Dimensions].MEMBERS , INSTR(1 , [}Dimensions].[}Dimensions].CURRENTMEMBER.NAME , "}" , 1) <> 1) , INSTR(1 , [}Dimensions].[}Dimensions].CURRENTMEMBER.NAME , ":" , 1) = 0)', '}Dimensions' );
+
+vControlDimensionSubset = '}Plans_ControlDimensions';
+IF ( SubsetExists( '}Dimensions', vControlDimensionSubset ) = 1);
+    SubsetDestroy( '}Dimensions', vControlDimensionSubset );
+ENDIF;
+SubsetCreatebyMDX( vControlDimensionSubset , 'FILTER(FILTER([}Dimensions].[}Dimensions].MEMBERS , INSTR(1 , [}Dimensions].[}Dimensions].CURRENTMEMBER.NAME , "}" , 1) <> 1) , INSTR(1 , [}Dimensions].[}Dimensions].CURRENTMEMBER.NAME , ":" , 1) = 0)', '}Dimensions' );
+
+
+# Create subset to generate list of contribution cubes to select from 
+vContributionCubesSubset = '}Plans_ContributionCubes';
+IF ( SubsetExists( '}Cubes', vContributionCubesSubset ) = 1);
+    SubsetDestroy( '}Cubes', vContributionCubesSubset );
+ENDIF;
+SubsetCreatebyMDX( vContributionCubesSubset , 'FILTER([}Cubes].[}Cubes].MEMBERS , INSTR(1 , [}Cubes].[}Cubes].CURRENTMEMBER.NAME , "}" , 1) <> 1)', '}Cubes'  );
+
+
+# Create subset for list of SecurityOverlayGlobal cubes  
+vSecurityOverlayGlobalCubes = '}Plans_SecurityOverlayGlobalCubes';
+IF ( SubsetExists( '}Cubes', vSecurityOverlayGlobalCubes ) = 1);
+    SubsetDestroy( '}Cubes', vSecurityOverlayGlobalCubes );
+ENDIF;
+SubsetCreatebyMDX( vSecurityOverlayGlobalCubes , '{GENERATE(TM1FILTERBYPATTERN([}Cubes].[}Cubes].MEMBERS, "}SecurityOverlayGlobal_*" , "MEMBER_NAME"), {STRTOMEMBER("[}Cubes].[}Cubes].[" + RIGHT([}Cubes].CURRENTMEMBER.NAME, (LEN([}Cubes].[}Cubes].CURRENTMEMBER.NAME) - 23)) + "]")})}', '}Cubes' );
+
+vCellSecurityCubes = '}Plans_CellSecurityCubes';
+IF ( SubsetExists( '}Cubes', vCellSecurityCubes ) = 1);
+    SubsetDestroy( '}Cubes', vCellSecurityCubes );
+ENDIF;
+SubsetCreatebyMDX( vCellSecurityCubes , '{GENERATE(TM1FILTERBYPATTERN([}Cubes].[}Cubes].MEMBERS, "}CellSecurity_*" , "MEMBER_NAME"), {STRTOMEMBER("[}Cubes].[}Cubes].[" +   RIGHT([}Cubes].CURRENTMEMBER.NAME, (LEN([}Cubes].[}Cubes].CURRENTMEMBER.NAME) - 14)) + "]")})}', '}Cubes' );
+
+vGroupsSubset = 'Plans';
+IF ( SubsetExists( '}Groups', vGroupsSubset ) = 1);
+    SubsetDestroy( '}Groups', vGroupsSubset );
+ENDIF;
+SubsetCreatebyMDX( vGroupsSubset , '{[}Groups].[}Groups].MEMBERS}', '}Groups' );
+
+vGroupsSubset = 'Plans';
+IF ( SubsetExists( '}Clients', vGroupsSubset ) = 1);
+    SubsetDestroy( '}Clients', vGroupsSubset );
+ENDIF;
+SubsetCreatebyMDX( vGroupsSubset , '{[}Clients].[}Clients].MEMBERS}', '}Clients' );
+
+#endregion

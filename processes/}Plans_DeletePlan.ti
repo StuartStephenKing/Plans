@@ -1,0 +1,57 @@
+#region Prolog
+vPlanStateCube = '}Plans_' | pPlan | '_State';
+vPlanCommentCube = '}Plans_' | pPlan | '_Comments';
+vPlansDimension = '}Plans';
+vApprovalDimension = CellGetS( '}Plans_Control', pPlan, 'Dimension' );
+vApprovalHierarchy = CellGetS( '}Plans_Control', pPlan, 'Hierarchy' );
+vApprovalSubset = CellGetS( '}Plans_Control', pPlan, 'Subset' );
+vSecurity = CellGetS( '}Plans_Control', pPlan, 'Security' );
+vPlanGroupPrefix = CellGetS( '}Plans_Control', pPlan, 'Group Prefix' );
+
+
+IF ( vSecurity @= 'Element' );
+    CubeDestroy( '}ElementSecurity_' | vApprovalDimension );
+ENDIF;
+
+# Delete the SecurityGlobalOverlay and cell security cubes only if this is the last workflow using the cube
+vCubeIndex = 1;
+vCube = DIMNM( '}Cubes', vCubeIndex );
+WHILE ( vCube @<> '');
+    IF ( CELLGETN ( '}Plans_Cubes', vCube, pPlan ) = 1);
+        lastWorkflowWithCube = 1;
+        vPlanIndex = 1;
+        vPlan = DIMNM ( vPlansDimension, vPlanIndex );
+        WHILE ( vPlan @<> '' );
+            IF ( vPlan @<> pPlan);
+                vOtherWorkflowCubeIndex = 1;
+                vOtherWorkflowCube = DIMNM ( '}Cubes', vOtherWorkflowCubeIndex );
+                WHILE ( vOtherWorkflowCube @<> '' );
+                    IF ( vOtherWorkflowCube @= vCube );
+                        lastWorkflowWithCube = 0;
+                    ENDIF;
+                    vOtherWorkflowCubeIndex = vOtherWorkflowCubeIndex + 1;
+                    vOtherWorkflowCube = DIMNM ( '}Cubes', vOtherWorkflowCubeIndex );
+                END;
+            ENDIF;
+            vPlanIndex = vPlanIndex + 1;
+            vPlan = DIMNM ( vPlansDimension, vPlanIndex );
+        END;
+        IF ( lastWorkflowWithCube = 1);
+            SecurityOverlayDestroyGlobalDefault ( vCube );  
+            IF ( CubeExists( '}CellSecurity_' | vCube ) = 1);
+                CellSecurityCubeDestroy( vCube );
+            ENDIF;
+            IF ( CubeExists( '}SecurityOverlayGlobal_' | vCube ) = 1);
+                SecurityOverlayDestroyGlobalDefault ( vCube );
+            ENDIF;
+        ENDIF;
+    ENDIF;
+    vCubeIndex = vCubeIndex + 1;
+    vCube = DIMNM( '}Cubes', vCubeIndex );
+END;
+
+DimensionElementDeleteDirect( vPlansDimension, pPlan );
+CubeDestroy( vPlanStateCube );
+CubeDestroy( vPlanCommentCube );
+
+#endregion

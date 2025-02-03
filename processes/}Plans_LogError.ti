@@ -1,0 +1,17 @@
+#region Prolog
+vNow           = TIMST (NOW(), '\Y-\m-\d \h:\i:\s' );
+vUser           = TM1User();
+
+
+vCurrentLine = NumberToString ( DIMSIZ( '}Plans_Error_Lines' ) );
+CellPutS( pPlan, '}Plans_Errors', vCurrentLine, 'Plan' );
+CellPutS( pError, '}Plans_Errors', vCurrentLine, 'Error' );
+CellPutS( pMessage, '}Plans_Errors', vCurrentLine, 'Message' );
+CellPutS( vNow, '}Plans_Errors', vCurrentLine, 'DateTime' );
+CellPutS( vUser, '}Plans_Errors', vCurrentLine, 'User' );
+
+vNextLine = NumberToString ( DIMSIZ( '}Plans_Error_Lines' ) + 1);
+DimensionElementInsertDirect( '}Plans_Error_Lines', '', vNextLine, 'N' );
+
+
+#endregion

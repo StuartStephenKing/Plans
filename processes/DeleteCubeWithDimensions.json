@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"DeleteCubeWithDimensions",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"DeleteCubeWithDimensions.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCube",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1738551607000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

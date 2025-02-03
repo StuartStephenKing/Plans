@@ -1,0 +1,30 @@
+#region Prolog
+
+vElementIndex = 1;
+vElement = ElementName( pApprovalDimension, pApprovalHierarchy, vElementIndex );
+WHILE ( vElement @<> '' );
+    vElementParentCount = ElementParentCount( pApprovalDimension, pApprovalHierarchy, vElement );
+    IF ( vElementParentCount > 1);
+        RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Invalid approval hierarchy.  Member ' | vElement | ' has multiple parents',
+               'pError', 'Error' );
+        ProcessError;
+    ENDIF;
+    vElementIndex = vElementIndex + 1;
+    vElement = ElementName( pApprovalDimension, pApprovalHierarchy, vElementIndex );
+END;
+
+
+vSetName = '__TopLevelMembers'; 
+vMDX = '{[' | pApprovalDimension | '].[' | pApprovalHierarchy | '].levels(0).MEMBERS}';
+SubsetCreatebyMDX( vSetName, vMDX, 1 );
+IF ( SubsetGetSize( pApprovalDimension, pApprovalHierarchy ) <> 1 );
+    RunProcess( '}Plans_LogError',
+               'pPlan', pPlan,
+               'pMessage', 'Invalid approval hierarchy.  Member ' | vElement | ' has multiple parents',
+               'pError', 'Error' );
+        ProcessError;
+ENDIF;
+
+#endregion

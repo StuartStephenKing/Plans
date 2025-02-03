@@ -1,0 +1,29 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_LockUnlockPlan",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_LockUnlockPlan.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"Forecast",
+			"Type":"String"
+		},
+		{
+			"Name":"pLock",
+			"Prompt":"",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[],
+	"UID": "1737911141000",
+	"VariablesUIData": [],
+	"UIData": "_ParameterConstraints=e30=\f"
+}

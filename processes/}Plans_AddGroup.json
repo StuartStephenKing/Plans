@@ -1,0 +1,23 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_AddGroup",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_AddGroup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pGroup",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737918366000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

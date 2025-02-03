@@ -1,0 +1,59 @@
+{
+	"@type":"Process",
+	"Name":"}Plans_SetNodeState",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}Plans_SetNodeState.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pPlan",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pNode",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pLock",
+			"Prompt":"",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTask",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pState",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pComment",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSetOwner",
+			"Prompt":"Y to set Owner (C to Clear)",
+			"Value":"N",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "1737928989000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

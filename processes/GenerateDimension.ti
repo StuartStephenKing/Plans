@@ -1,0 +1,39 @@
+#region Prolog
+
+IF ( DimensionExists ( pDimension ) = 1);
+    DimensionDestroy ( pDimension );
+ENDIF; 
+DimensionCreate ( pDimension );
+
+DimensionNameLength = LONG ( pDimension );
+LongestElementNumberLength = LONG ( NumberToString ( pNumberOfLeafElements ) );
+ElementNameHeader = UPPER ( SUBST ( pDimension, 1, pElementNameLength - LongestElementNumberLength ) );
+ElementNameHeaderLength = LONG ( ElementNameHeader );
+i = 1;
+WHILE ( i <= pNumberOfLeafElements );
+    elementNumber = NumberToString( i );
+    zeroPadCount = pElementNameLength - ( ElementNameHeaderLength + LONG ( elementNumber ) );
+    zeroPadString = FILL ( '0', zeroPadCount );   
+    fullElementName = UPPER ( ElementNameHeader | zeroPadString | elementNumber );
+    DimensionElementInsert ( pDimension, NumberToString(i), fullElementName, 'N' );
+    i = i + 1;
+END;
+
+#endregion
+#region Epilog
+
+vRangeMultiplier = 4;
+vBaseMinimum = 10;
+vLevelIndex = 0;
+vRemainingLevels = pLevels - vLevelIndex;
+
+WHILE ( vLevelIndex < pLevels );
+    ExecuteProcess ( 'GenerateLevel', 
+                    'pDimension', pDimension, 
+                    'pLevel', vLevelIndex, 
+                    'pMinChilds', vBaseMinimum - vRemainingLevels ,
+                    'pMaxChilds', ( vBaseMinimum - vRemainingLevels ) * vRangeMultiplier ,
+                    'pElementNameLength', pElementNameLength);
+    vLevelIndex = vLevelIndex + 1;
+END;
+#endregion

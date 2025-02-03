@@ -1,0 +1,15 @@
+{
+	"@type":"Process",
+	"Name":"DeleteControlCube",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"DeleteControlCube.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[],
+	"UID": "1737835667000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}
