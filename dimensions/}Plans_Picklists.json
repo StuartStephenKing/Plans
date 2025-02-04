@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"}Plans_Picklists",
+	"Hierarchies@Code.links":
+	[
+		"}Plans_Picklists.hierarchies/}Plans_Picklists.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}Plans_Picklists')/Hierarchies('}Plans_Picklists')"
+	}
+}

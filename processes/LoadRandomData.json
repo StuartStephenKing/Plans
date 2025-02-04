@@ -24,7 +24,7 @@
 		{
 			"Name":"pQueueSize",
 			"Prompt":"",
-			"Value":4,
+			"Value":8,
 			"Type":"Numeric"
 		}
 	],

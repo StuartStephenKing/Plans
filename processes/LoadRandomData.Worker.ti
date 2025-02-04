@@ -1,0 +1,171 @@
+#region Prolog
+
+vNow = NumberToString( NOW );
+vFilePath = pDirectory | pElement | '.csv';
+
+sourceViewName = pElement | vNow;
+IF ( ViewExists ( pCube, sourceViewName ) = 1 );
+    ViewDestroy ( pCube, sourceViewName );
+ENDIF;
+ViewCreate ( pCube, sourceViewName, 1 );
+
+i = 1;
+dimensionName = TABDIM ( pCube, i );
+WHILE ( dimensionName @<> '' );
+    i = i + 1;
+    dimensionName = TABDIM ( pCube, i );
+    IF ( i > 17 );
+        PROCESSQUIT;
+    ENDIF;
+END;
+
+dimensionCount = i - 1;
+
+i = 1;
+WHILE ( i <= dimensionCount );
+    currentDim = TABDIM ( pCube, i );
+    IF ( currentDim  @= pDimension);
+        IF (SubsetExists ( currentDim, sourceViewName ) = 1 );
+            SubsetDestroy ( currentDim, sourceViewName ); 
+        ENDIF;
+        SubsetCreate ( currentDim, sourceViewName, 1 );
+        SubsetElementInsert( currentDim, sourceViewName, pElement, 1 );
+        ViewSubsetAssign ( pCube, sourceViewName, currentDim, sourceViewName );
+    ELSE;
+        subsetName = 'temp_populate_cube_' | vNow;
+        IF (SubsetExists ( currentDim, subsetName ) = 1 );
+            SubsetDestroy ( currentDim, subsetName ); 
+        ENDIF;
+        SubsetCreate ( currentDim, subsetName, 1 );
+        j = 1;
+        WHILE ( j <= DIMSIZ (currentDim) );
+            currentElement = DIMNM ( currentDim, j );
+            IF ( ELLEV (currentDim, currentElement ) = 0);
+                SubsetElementInsert (  currentDim, subsetName, currentElement, SubsetGetSize ( currentDim, subsetName ) + 1 );
+            ENDIF;
+            j = j + 1;
+        END; 
+        ViewSubsetAssign ( pCube, sourceViewName, currentDim, subsetName);
+    ENDIF;
+    i = i + 1;
+END;
+
+ViewExtractSkipZeroesSet ( pCube, sourceViewName, 0 );
+ViewExtractSkipCalcsSet ( pCube, sourceViewName, 1);
+ViewConstruct ( pCube, sourceViewName );
+
+DataSourceType = 'VIEW';
+DatasourceNameForServer = pCube;
+DatasourceCubeview=sourceViewName;
+
+#endregion
+#region Data
+
+vValue = RAND * 100;
+
+# IF ( dimensionCount = 2 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, vValue );
+# ELSEIF ( dimensionCount = 3 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, vValue );
+# ELSEIF ( dimensionCount = 4 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, vValue );
+# ELSEIF ( dimensionCount = 5 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, vValue );
+# ELSEIF ( dimensionCount = 6 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, vValue );
+# ELSEIF ( dimensionCount = 7 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, vValue );
+# ELSEIF ( dimensionCount = 8 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, vValue );
+# ELSEIF ( dimensionCount = 9 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, vValue );
+# ELSEIF ( dimensionCount = 10);
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, vValue );
+# ELSEIF ( dimensionCount = 11 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, vValue );
+# ELSEIF ( dimensionCount = 12 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, vValue );
+# ELSEIF ( dimensionCount = 13 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, vValue );
+# ELSEIF ( dimensionCount = 14);
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, vValue );
+# ELSEIF ( dimensionCount = 15 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, vValue );
+# ELSEIF ( dimensionCount = 16 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, vValue );
+# ELSEIF ( dimensionCount = 17 );
+#     ASCIIOUTPUT ( vFilePath, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17, vValue );
+# ENDIF;
+
+
+IF ( dimensionCount = 2 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2 );
+   ENDIF;
+ELSEIF ( dimensionCount = 3 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3 );
+   ENDIF;
+ELSEIF ( dimensionCount = 4 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4 );
+   ENDIF;
+ELSEIF ( dimensionCount = 5 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5 );
+   ENDIF;
+ELSEIF ( dimensionCount = 6 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6 );
+   ENDIF;
+ELSEIF ( dimensionCount = 7 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+   ENDIF;
+ELSEIF ( dimensionCount = 8 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+   ENDIF;
+ELSEIF ( dimensionCount = 9 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+   ENDIF;
+ELSEIF ( dimensionCount = 10);
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+   ENDIF;
+ELSEIF ( dimensionCount = 11 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+   ENDIF;
+ELSEIF ( dimensionCount = 12 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12  );
+   ENDIF;
+ELSEIF ( dimensionCount = 13 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+   ENDIF;
+ELSEIF ( dimensionCount = 14);
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+   ENDIF;
+ELSEIF ( dimensionCount = 15 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+   ENDIF;
+ELSEIF ( dimensionCount = 16 );
+   IF ( CELLISUPDATEABLE  ( pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 ) = 1);
+      CELLPUTN ( vValue, pCube, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+   ENDIF;
+ENDIF;
+
+#endregion
+#region Epilog
+
+# #ExecuteProcess ( 'LoadRandomData.Worker.2', 
+#                 'pCube', pCube, 
+#                 'pFile', vFilePath, 
+#                 'pDirectory', pDirectory, 
+#                 'pElement', pElement );
+#endregion

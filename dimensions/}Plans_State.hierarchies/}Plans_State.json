@@ -1,0 +1,32 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}Plans_State",
+	"Elements":
+	[
+		{
+			"Name":"Contributor group",
+			"Type":"String"
+		},
+		{
+			"Name":"Reviewer group",
+			"Type":"String"
+		},
+		{
+			"Name":"State",
+			"Type":"String"
+		},
+		{
+			"Name":"Owner",
+			"Type":"String"
+		},
+		{
+			"Name":"Last update",
+			"Type":"String"
+		},
+		{
+			"Name":"Lock",
+			"Type":"String"
+		}
+	],
+	"Subsets@Code.links":[]
+}

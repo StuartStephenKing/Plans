@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"}ReviewerGroups",
+	"Hierarchies@Code.links":
+	[
+		"}ReviewerGroups.hierarchies/}ReviewerGroups.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}ReviewerGroups')/Hierarchies('}ReviewerGroups')"
+	}
+}

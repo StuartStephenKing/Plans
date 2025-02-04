@@ -1,0 +1,14 @@
+{
+	"@type":"Cube",
+	"Name":"}Plans_Picklists",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('}Plans_Picklists')"
+		},
+		{
+			"@id":"Dimensions('}Plans_PickValue')"
+		}
+	],
+	"Views@Code.links":[]
+}

@@ -1,0 +1,22 @@
+{
+	"@type":"Process",
+	"Name":"DeleteControlDimension",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"DeleteControlDimension.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimension",
+			"Prompt":"",
+			"Value":"}Features",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
+}

@@ -1,0 +1,68 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}Plans_Control",
+	"Elements":
+	[
+		{
+			"Name":"Name",
+			"Type":"String"
+		},
+		{
+			"Name":"Owner",
+			"Type":"String"
+		},
+		{
+			"Name":"Created",
+			"Type":"String"
+		},
+		{
+			"Name":"State Cube",
+			"Type":"String"
+		},
+		{
+			"Name":"Input Cubes",
+			"Type":"String"
+		},
+		{
+			"Name":"Dimension",
+			"Type":"String"
+		},
+		{
+			"Name":"Hierarchy",
+			"Type":"String"
+		},
+		{
+			"Name":"Subset",
+			"Type":"String"
+		},
+		{
+			"Name":"State",
+			"Type":"String"
+		},
+		{
+			"Name":"Security",
+			"Type":"String"
+		},
+		{
+			"Name":"Control Dimension",
+			"Type":"String"
+		},
+		{
+			"Name":"Control Hierarchy",
+			"Type":"String"
+		},
+		{
+			"Name":"Control Member",
+			"Type":"String"
+		},
+		{
+			"Name":"Comment Index",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Group Prefix",
+			"Type":"String"
+		}
+	],
+	"Subsets@Code.links":[]
+}

@@ -1,0 +1,19 @@
+{
+	"@type":"Subset",
+	"Name":"LEVEL2",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('PlansTestCube_D5')/Hierarchies('PlansTestCube_D5')/Elements('LEVEL2000000001')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D5')/Hierarchies('PlansTestCube_D5')/Elements('LEVEL2000000002')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D5')/Hierarchies('PlansTestCube_D5')/Elements('LEVEL2000000003')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D5')/Hierarchies('PlansTestCube_D5')/Elements('LEVEL2000000004')"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}Plans_PickValue",
+	"Elements":
+	[
+		{
+			"Name":"value",
+			"Type":"String"
+		}
+	],
+	"Subsets@Code.links":[]
+}

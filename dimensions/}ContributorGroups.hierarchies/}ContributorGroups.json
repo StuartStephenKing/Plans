@@ -1,0 +1,24 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}ContributorGroups",
+	"Elements":
+	[
+		{
+			"Name":"Contributor Group A",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Contributor Group B",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Contributor Group C",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Contributor Group D",
+			"Type":"Numeric"
+		}
+	],
+	"Subsets@Code.links":[]
+}

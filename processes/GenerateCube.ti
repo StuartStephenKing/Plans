@@ -101,6 +101,6 @@ ENDIF;
 ExecuteProcess( 'LoadRandomData',
 	'pCube', pCube,
 	'pSplitDimension', vLastDimension,
-	'pQueueSize', 2 );
+	'pQueueSize', 5 );
 
 #endregion

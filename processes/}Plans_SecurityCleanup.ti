@@ -26,8 +26,6 @@ WHILE ( vDimension @<> '');
 END;
 
 
-
-
 #endregion
 #region Epilog
 

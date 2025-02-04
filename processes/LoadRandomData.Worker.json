@@ -1,8 +1,8 @@
 {
 	"@type":"Process",
-	"Name":"LoadRandomData.Worker.2",
+	"Name":"LoadRandomData.Worker",
 	"HasSecurityAccess":false,
-	"Code@Code.link":"LoadRandomData.Worker.2.ti",
+	"Code@Code.link":"LoadRandomData.Worker.ti",
 	"DataSource":
 	{
 		"Type":"None"
@@ -16,19 +16,19 @@
 			"Type":"String"
 		},
 		{
-			"Name":"pFile",
-			"Prompt":"",
-			"Value":"",
-			"Type":"String"
-		},
-		{
-			"Name":"pDirectory",
+			"Name":"pDimension",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"
 		},
 		{
 			"Name":"pElement",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDirectory",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"
@@ -154,11 +154,18 @@
 			"Position":17,
 			"StartByte":0,
 			"EndByte":0
+		},
+		{
+			"Name":"dim18",
+			"Type":"String",
+			"Position":18,
+			"StartByte":0,
+			"EndByte":0
 		}
 	],
-	"UID": "1738552687000",
 	"UIData": "_ParameterConstraints=e30=\f",
 	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
 		"VarType=32\fColType=827\f",
 		"VarType=32\fColType=827\f",
 		"VarType=32\fColType=827\f",

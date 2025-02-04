@@ -1,6 +1,6 @@
 #region Prolog
 
-CubeDestroy( '}LocalizedDimensionAttributes' );
+CubeDestroy( '}ClientCAMAssociatedGroups' );
 
 
 #endregion

@@ -4,10 +4,14 @@ DatasourceASCIIQuoteCharacter = '';
 vProcessName     = GetProcessName();
 vNow           = TIMST ( NOW(), '\Y\m\d\h\i\s' );
 
-vWorkerProcess  = 'LoadRandomData.Worker.1';
-vDirectory     = '/' | pCube | '_' | vNow | '/';
-queueDebugFile = vDirectory | 'queue_debug.log'; 
-subsetName = '_SplitSubset_' | vNow; 
+vWorkerProcess  = 'LoadRandomData.Worker';
+vDirectory     = '/LoadRandomData/' | pCube | '_' | vNow | '/';
+queueDebugFile = vDirectory | 'queue_debug.log';
+
+subsetName = 'splitSubset_' | vNow; 
+IF ( SubsetExists ( pSplitDimension, subsetName ) = 1);
+    SubsetDestroy ( pSplitDimension, subsetName );
+ENDIF;
 SubsetCreate ( pSplitDimension, subsetName, 1 );
 
 elementIndex = 1;
@@ -39,10 +43,14 @@ WHILE ( completedCount < SubsetGetSize ( pSplitDimension, subsetName ) );
         ENDIF;
         jsonQueueIndex =jsonQueueIndex - 1;
     END;
-   
+
     WHILE ( JsonSize ( jsonQueue ) < pQueueSize & subsetIndexToQueue <= SubsetGetSize ( pSplitDimension, subsetName ) );
         splitElement = SubsetGetElementName ( pSplitDimension, subsetName, subsetIndexToQueue );
-        jobID        = RunProcess ( vWorkerProcess, 'pCube', pCube, 'pDimension', pSplitDimension, 'pElement', splitElement, 'pDirectory', vDirectory );
+        jobID        = RunProcess ( vWorkerProcess, 
+                                   'pCube', pCube, 
+                                   'pDimension', pSplitDimension, 
+                                   'pElement', splitElement, 
+                                   'pDirectory', vDirectory );
         addIndex = JsonSize ( jsonQueue );
         ASCIIOUTPUT ( queueDebugFile, 'Adding jobID to queue: ' | jobID | ' for slice: ' | splitElement | ' at JSON array index ' | NumberToString ( addIndex ) );
         jsonQueue = JsonAdd ( jsonQueue, addIndex, StringToJson( jobID ) );

@@ -1,0 +1,28 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}Plans_Picklists",
+	"Elements":
+	[
+		{
+			"Name":"Approval Dimension",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Approval Subset",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Control Dimension",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Control Member",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"Security",
+			"Type":"Numeric"
+		}
+	],
+	"Subsets@Code.links":[]
+}

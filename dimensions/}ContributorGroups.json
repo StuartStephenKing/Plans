@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"}ContributorGroups",
+	"Hierarchies@Code.links":
+	[
+		"}ContributorGroups.hierarchies/}ContributorGroups.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}ContributorGroups')/Hierarchies('}ContributorGroups')"
+	}
+}

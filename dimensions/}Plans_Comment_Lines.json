@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"}Plans_Comment_Lines",
+	"Hierarchies@Code.links":
+	[
+		"}Plans_Comment_Lines.hierarchies/}Plans_Comment_Lines.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}Plans_Comment_Lines')/Hierarchies('}Plans_Comment_Lines')"
+	}
+}

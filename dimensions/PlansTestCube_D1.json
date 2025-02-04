@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"PlansTestCube_D1",
+	"Hierarchies@Code.links":
+	[
+		"PlansTestCube_D1.hierarchies/PlansTestCube_D1.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('PlansTestCube_D1')/Hierarchies('PlansTestCube_D1')"
+	}
+}

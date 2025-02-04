@@ -1,0 +1,12 @@
+{
+	"@type":"Dimension",
+	"Name":"}Plan_Tasks",
+	"Hierarchies@Code.links":
+	[
+		"}Plan_Tasks.hierarchies/}Plan_Tasks.json"
+	],
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}Plan_Tasks')/Hierarchies('}Plan_Tasks')"
+	}
+}

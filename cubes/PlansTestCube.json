@@ -1,0 +1,23 @@
+{
+	"@type":"Cube",
+	"Name":"PlansTestCube",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('PlansTestCube_D1')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D2')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D3')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D4')"
+		},
+		{
+			"@id":"Dimensions('PlansTestCube_D5')"
+		}
+	],
+	"Views@Code.links":[]
+}

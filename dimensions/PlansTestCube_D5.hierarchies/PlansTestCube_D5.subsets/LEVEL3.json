@@ -1,0 +1,10 @@
+{
+	"@type":"Subset",
+	"Name":"LEVEL3",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('PlansTestCube_D5')/Hierarchies('PlansTestCube_D5')/Elements('LEVEL3000000001')"
+		}
+	]
+}

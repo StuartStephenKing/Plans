@@ -1,0 +1,14 @@
+{
+	"@type":"Cube",
+	"Name":"}Plans_Group_Source",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('}ContributorGroups')"
+		},
+		{
+			"@id":"Dimensions('}ReviewerGroups')"
+		}
+	],
+	"Views@Code.links":[]
+}

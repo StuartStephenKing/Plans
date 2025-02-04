@@ -24,7 +24,7 @@
 		{
 			"Name":"pDimensionsLeafCount",
 			"Prompt":"",
-			"Value":"1, 1, 1, 1, 200",
+			"Value":"10, 10, 10, 10, 500",
 			"Type":"String"
 		},
 		{

@@ -1,0 +1,36 @@
+{
+	"@type":"Hierarchy",
+	"Name":"}Plans_Comments",
+	"Elements":
+	[
+		{
+			"Name":"DateTime",
+			"Type":"String"
+		},
+		{
+			"Name":"User",
+			"Type":"String"
+		},
+		{
+			"Name":"Plan",
+			"Type":"String"
+		},
+		{
+			"Name":"Task",
+			"Type":"String"
+		},
+		{
+			"Name":"Node",
+			"Type":"String"
+		},
+		{
+			"Name":"State",
+			"Type":"String"
+		},
+		{
+			"Name":"Comment",
+			"Type":"String"
+		}
+	],
+	"Subsets@Code.links":[]
+}

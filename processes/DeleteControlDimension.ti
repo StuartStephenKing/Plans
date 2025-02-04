@@ -1,0 +1,6 @@
+#region Prolog
+
+DimensionDestroy( pDimension );
+
+
+#endregion
